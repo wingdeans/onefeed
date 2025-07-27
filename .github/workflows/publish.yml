@@ -20,6 +20,8 @@ jobs:
           path: 'publish'
       - working-directory: publish
         run: |
-          bb ../trunk/onefeed.clj
+          curl -L https://github.com/babashka/babashka/releases/download/v1.12.206/babashka-1.12.206-linux-amd64-static.tar.gz -o /tmp/bb.tar.gz
+          tar xf /tmp/bb.tar.gz -C /tmp
+          /tmp/bb ../trunk/onefeed.clj
           git commit -am "Onefeed"
           git push
