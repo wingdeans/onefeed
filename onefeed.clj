@@ -54,7 +54,7 @@
              "https://news.ycombinator.com/front?day=%s&p=%s"
              date page)
         submission (->> (http/get url
-                                  {:headers {:Cookie cookie}})
+                                  {:headers {:cookie cookie}})
                         :body
                         hickory/parse
                         hickory/as-hickory
