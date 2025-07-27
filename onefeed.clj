@@ -15,9 +15,7 @@
       :headers
       (get "set-cookie")
       (clojure.string/split #";")
-      first
-      (clojure.string/split #"=")
-      second))
+      first))
 
 (defn rezip-node [loc]
   (hickory-zip (zip/node loc)))
