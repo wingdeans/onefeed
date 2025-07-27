@@ -1,0 +1,25 @@
+on:
+  push: {branches: main}
+  schedule:
+    - cron: '0 10 * * *'
+  workflow_dispatch:
+
+permissions:
+  content: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: 'trunk'
+      - uses: actions/checkout@v4
+        with:
+          ref: 'publish'
+          path: 'publish'
+      - working_directory: publish
+        run: |
+          bb ../trunk/onefeed.clj
+          git commit -am "Onefeed"
+          git push
