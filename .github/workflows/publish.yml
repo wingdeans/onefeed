@@ -18,7 +18,7 @@ jobs:
         with:
           ref: 'publish'
           path: 'publish'
-      - working_directory: publish
+      - working-directory: publish
         run: |
           bb ../trunk/onefeed.clj
           git commit -am "Onefeed"
