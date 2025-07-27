@@ -18,5 +18,6 @@ jobs:
           /tmp/bb onefeed.clj
           git config --global user.email "66850754+wingdeans@users.noreply.github.com"
           git config --global user.name "onefeed"
-          git commit -am "Onefeed"
+          git add -A
+          git commit -m "Onefeed"
           git push
