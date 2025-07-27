@@ -5,6 +5,20 @@
          '[hickory.zip :refer [hickory-zip]]
          '[hiccup2.core :as hiccup])
 
+(def cookie
+  (-> (http/post "https://news.ycombinator.com/login"
+                 {:client (http/client
+                           (conj http/default-client-opts
+                                 {:follow-redirects :never}))
+                  :form-params {:acct "throwaway873642"
+                                :pw "n5A>Xb~4#fadUTF"}})
+      :headers
+      (get "set-cookie")
+      (clojure.string/split #";")
+      first
+      (clojure.string/split #"=")
+      second))
+
 (defn rezip-node [loc]
   (hickory-zip (zip/node loc)))
 
@@ -41,8 +55,8 @@
   (let [url (format
              "https://news.ycombinator.com/front?day=%s&p=%s"
              date page)
-        submission (->> url
-                        http/get
+        submission (->> (http/get url
+                                  {:headers {:Cookie cookie}})
                         :body
                         hickory/parse
                         hickory/as-hickory
@@ -50,14 +64,14 @@
                         (sel/select-next-loc (sel/id :bigbox))
                         rezip-node
                         (sel/select-next-loc sel-submission))]
-  (loop [submission submission
-         acc (transient [])]
-    (if (nil? submission)
-      (persistent! acc)
-      (recur
-       (sel/select-next-loc sel-submission
-                            (zip/right (zip/right submission)))
-       (conj! acc (parse-submission submission)))))))
+    (loop [submission submission
+           acc (transient [])]
+      (if (nil? submission)
+        (persistent! acc)
+        (recur
+         (sel/select-next-loc sel-submission
+                              (zip/right (zip/right submission)))
+         (conj! acc (parse-submission submission)))))))
 
 (let [yesterday (-> (java.time.ZoneId/of "UTC")
                     java.time.LocalDate/now
