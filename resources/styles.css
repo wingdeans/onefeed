@@ -1,0 +1,13 @@
+#submissions {
+    display: flex;
+    flex-direction: column;
+}
+
+a {
+    background-color: white;
+}
+
+a:visited {
+    background-color: black;
+    color: white;
+}
