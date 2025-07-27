@@ -6,8 +6,8 @@
          '[hiccup2.core :as hiccup])
 
 (def cookie
-  (let [hn-username (System/getenv "hn-username")
-        hn-password (System/getenv "hn-password")]
+  (let [hn-username (System/getenv "HN_USERNAME")
+        hn-password (System/getenv "HN_PASSWORD")]
     (when (and hn-username hn-password)
       (-> (http/post "https://news.ycombinator.com/login"
                      {:client (http/client
