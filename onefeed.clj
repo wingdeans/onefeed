@@ -83,16 +83,18 @@
                        flatten
                        (map (fn [submission]
                               [:a {:href (:url submission)}
-                               (:title submission)])))]
+                               (:title submission)])))
+      html
+      (str
+       (hiccup/html
+        (hiccup/raw "<!DOCTYPE html>")
+        [:html
+         [:head
+          [:link {:rel "stylesheet"
+                  :href "resources/styles.css"}]]
+         [:div#submissions submissions]]))]
   (with-open [w (clojure.java.io/writer
                  (str yesterday ".html"))]
-    (.write
-     w
-     (str
-      (hiccup/html
-       (hiccup/raw "<!DOCTYPE html>")
-       [:html
-        [:head
-         [:link {:rel "stylesheet"
-                 :href "styles.css"}]]
-        [:div#submissions submissions]])))))
+    (.write w html))
+  (with-open [w (clojure.java.io/writer "index.html")]
+    (.write w html)))
