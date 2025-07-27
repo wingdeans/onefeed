@@ -6,16 +6,19 @@
          '[hiccup2.core :as hiccup])
 
 (def cookie
-  (-> (http/post "https://news.ycombinator.com/login"
-                 {:client (http/client
-                           (conj http/default-client-opts
-                                 {:follow-redirects :never}))
-                  :form-params {:acct "throwaway873642"
-                                :pw "n5A>Xb~4#fadUTF"}})
-      :headers
-      (get "set-cookie")
-      (clojure.string/split #";")
-      first))
+  (let [hn-username (System/getenv "hn-username")
+        hn-password (System/getenv "hn-password")]
+    (when (and hn-username hn-password)
+      (-> (http/post "https://news.ycombinator.com/login"
+                     {:client (http/client
+                               (conj http/default-client-opts
+                                     {:follow-redirects :never}))
+                      :form-params {:acct hn-username
+                                    :pw hn-password}})
+          :headers
+          (get "set-cookie")
+          (clojure.string/split #";")
+          first))))
 
 (defn rezip-node [loc]
   (hickory-zip (zip/node loc)))
@@ -53,8 +56,9 @@
   (let [url (format
              "https://news.ycombinator.com/front?day=%s&p=%s"
              date page)
-        submission (->> (http/get url
-                                  {:headers {:cookie cookie}})
+        submission (->> (http/get url (if cookie
+                                        {:headers {:cookie cookie}}
+                                        {}))
                         :body
                         hickory/parse
                         hickory/as-hickory

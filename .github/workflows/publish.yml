@@ -12,7 +12,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: |
+      - env:
+          hn-username: ${{ secrets.hn-username }}
+          hn-password: ${{ secrets.hn-password }}
+        run: |
           curl -L https://github.com/babashka/babashka/releases/download/v1.12.206/babashka-1.12.206-linux-amd64-static.tar.gz -o /tmp/bb.tar.gz
           tar xf /tmp/bb.tar.gz -C /tmp
           /tmp/bb onefeed.clj
