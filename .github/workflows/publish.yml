@@ -4,20 +4,19 @@ on:
     - cron: '0 10 * * *'
   workflow_dispatch:
 
-permissions:
-  contents: write
-
 jobs:
-  publish:
+  update:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
         with:
-          path: 'trunk'
+          path: trunk
       - uses: actions/checkout@v4
         with:
-          ref: 'publish'
-          path: 'publish'
+          ref: publish
+          path: publish
       - working-directory: publish
         env:
           HN_USERNAME: ${{ secrets.HN_USERNAME }}
@@ -31,3 +30,14 @@ jobs:
           git add -A
           git commit -m "Onefeed"
           git push
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: publish
+  deploy:
+    needs: update
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - uses: actions/deploy-pages@v4
