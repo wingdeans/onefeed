@@ -75,7 +75,7 @@
                               (zip/right (zip/right submission)))
          (conj! acc (parse-submission submission)))))))
 
-(let [yesterday (-> (java.time.ZoneId/of "UTC")
+(let [yesterday (-> (java.time.ZoneId/of "UTC-10")
                     java.time.LocalDate/now
                     (.minusDays 1))
       submissions (->> (pmap #(hn-submissions yesterday %)
