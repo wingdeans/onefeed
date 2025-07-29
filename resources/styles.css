@@ -1,4 +1,4 @@
-html, body, #submissions {
+html, body {
     height: 100%;
 }
 
@@ -6,6 +6,11 @@ body {
     margin: 0;
     padding: 8px;
     box-sizing: border-box;
+}
+
+#submissions {
+    height: 100%;
+    column-rule: solid;
 }
 
 @media (75rem <= width) {
@@ -22,4 +27,5 @@ body {
 
 a {
     display: block;
+    break-inside: avoid;
 }
