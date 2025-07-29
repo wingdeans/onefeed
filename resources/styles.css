@@ -1,13 +1,25 @@
-#submissions {
-    display: flex;
-    flex-direction: column;
+html, body, #submissions {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+@media (75rem <= width) {
+    #submissions {
+        columns: 3;
+    }
+}
+
+@media (50rem <= width < 75rem) {
+    #submissions {
+        columns: 2;
+    }
 }
 
 a {
-    background-color: white;
-}
-
-a:visited {
-    background-color: black;
-    color: white;
+    display: block;
 }

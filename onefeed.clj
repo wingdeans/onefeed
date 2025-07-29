@@ -90,9 +90,12 @@
         (hiccup/raw "<!DOCTYPE html>")
         [:html
          [:head
+          [:meta {:name "viewport"
+                  :content "width=device-width,initial-scale=1"}]
           [:link {:rel "stylesheet"
                   :href "resources/styles.css"}]]
-         [:div#submissions submissions]]))]
+         [:body
+          [:div#submissions submissions]]]))]
   (with-open [w (clojure.java.io/writer
                  (str yesterday ".html"))]
     (.write w html))
